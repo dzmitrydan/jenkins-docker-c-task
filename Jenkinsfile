@@ -20,10 +20,5 @@ pipeline {
                 sh 'make test -C cparse'
             }
         }
-        stage('Archive Artifacts') {
-                archiveArtifacts allowEmptyArchive: true,
-                artifacts: 'cparse/core-shunting-yard.o',
-                followSymlinks: false
-        }
     }
 }
