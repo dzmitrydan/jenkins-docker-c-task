@@ -58,17 +58,6 @@ pipeline {
         }
         stage('Archive Artifacts') {
             steps {
-                            publishHTML([
-                                allowMissing: false,
-                                alwaysLinkToLastBuild: false,
-                                keepAll: false,
-                                reportDir: 'build/reports/tests/test',
-                                reportFiles: 'index.html',
-                                reportName: 'Jenkins Pipeline Test Report',
-                                reportTitles: '', useWrapperFileDirectly: true
-                            ])
-                        }
-            steps {
                 script {
                    def date = new Date()
                    def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
@@ -79,6 +68,15 @@ pipeline {
                 artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                 followSymlinks: false
             }
+            publishHTML([
+                                            allowMissing: false,
+                                            alwaysLinkToLastBuild: false,
+                                            keepAll: false,
+                                            reportDir: 'build/reports/tests/test',
+                                            reportFiles: 'index.html',
+                                            reportName: 'Jenkins Pipeline Test Report',
+                                            reportTitles: '', useWrapperFileDirectly: true
+                                        ])
         }
     }
     post {
