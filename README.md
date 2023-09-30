@@ -51,6 +51,7 @@ ssh-keygen -t rsa -f jenkins_agent
 - Enter private SSH key
 
 #### 1.6 Node settings:
+- Node name: `jenkins_agent`
 - Remote Root Directory: `/home/jenkins/agent`
 - Host: `agent`
 - Launch method: `Launch agents via SSH`

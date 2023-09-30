@@ -19,21 +19,19 @@ pipeline {
         }
         stage('Checkout Project Repo') {
             steps {
-                dir('cparse') {
-                    git url: 'https://github.com/cparse/cparse.git'
-                }
+                git url: 'https://github.com/cparse/cparse.git'
             }
         }
         stage('Build') {
             steps {
                 sh 'autoconf --version'
                 sh 'make --version'
-                sh 'make -C cparse'
+                sh 'make'
             }
         }
         stage('Execute Unit Tests') {
             steps {
-                sh 'make test -C cparse'
+                sh 'make test'
             }
         }
         stage('Push into Artifactory') {
