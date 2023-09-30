@@ -1,0 +1,32 @@
+plugins {
+  id "java"
+  id "groovy"
+  id 'codenarc'
+}
+
+repositories {
+  maven { url 'https://repo.jenkins-ci.org/releases/' }
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation 'org.codehaus.groovy:groovy-all:3.0.9'
+  testImplementation "junit:junit:4.13.2"
+  testImplementation "com.lesfurets:jenkins-pipeline-unit:1.10"
+  codenarc 'org.codenarc:CodeNarc:3.3.0'
+}
+
+test {
+  testLogging {
+    events "PASSED", "FAILED", "SKIPPED"
+  }
+}
+
+codenarc {
+  toolVersion = '3.3.0'
+  configFile = file('config/codenarc.groovy')
+  //reportFormat = 'html'
+  reportFormat = 'xml'
+  ignoreFailures = true
+}
