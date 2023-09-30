@@ -44,7 +44,7 @@ ssh-keygen -t rsa -f jenkins_agent
 ```
 
 #### 1.5 In the Jenkins settings (Credentials > Global credentials > Add Credentials) add private SSH keys
-- SSH `Username with private key`
+- Kind: `SSH Username with private key`
 - ID: `jenkins_agent`
 - Username: `jenkins`
 - Select `Enter directly`

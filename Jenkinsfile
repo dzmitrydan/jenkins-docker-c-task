@@ -1,22 +1,6 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage("Setup Parameters") {
-            steps {
-                script {
-                    properties([
-                        parameters([
-                            string(
-                                defaultValue: 'none',
-                                description: 'version',
-                                name: 'VERSION',
-                                trim: true
-                            )
-                        ])
-                    ])
-                }
-            }
-        }
         stage('Checkout Project Repo') {
             steps {
                 dir('cparse') {
@@ -40,7 +24,6 @@ pipeline {
                 archiveArtifacts allowEmptyArchive: true,
                 artifacts: 'cparse/core-shunting-yard.o',
                 followSymlinks: false
-            }
         }
     }
 }
