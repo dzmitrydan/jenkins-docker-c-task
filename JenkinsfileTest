@@ -1,4 +1,4 @@
-// 'JenkinsfileTest' differs from 'Jenkinsfile' only in the absence of the "stage('Push into Artifactory')",
+// 'JenkinsfileTest' differs from 'JenkinsfileDeclarative' only in the absence of the "stage('Push into Artifactory')",
 // as there were difficulties with this part of the code when writing tests.
 
 pipeline {

@@ -14,10 +14,7 @@ class JenkinsPipelineTest extends DeclarativePipelineTest {
         helper.registerAllowedMethod('git', [Map], stringInterceptor)
         helper.registerAllowedMethod('codeNarc', [Map], stringInterceptor)
         helper.registerAllowedMethod('recordIssues', [Map], stringInterceptor)
-        //helper.registerAllowedMethod('junit', [Map], stringInterceptor)
         helper.registerAllowedMethod("parameters", [List])
-        //helper.registerAllowedMethod('buildAddUrl', [Map], stringInterceptor)
-        //helper.registerAllowedMethod('addDeployToDashboard', [Map], stringInterceptor)
     }
 
     @Test
