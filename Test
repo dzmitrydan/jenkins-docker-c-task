@@ -1,0 +1,11 @@
+pipeline {
+    agent {label 'jenkins_agent'}
+    stages {
+
+    }
+    post {
+        always {
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
+        }
+    }
+}

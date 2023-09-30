@@ -13,14 +13,20 @@
    - Static code analyzer: [CodeNarc](https://codenarc.org)
    - Jenkinsfile
    - Docker-compose files
-4. Project for pipeline [cparse](https://github.com/cparse/cparse)
-5. Artifactory
+4. C++ project for pipeline [cparse](https://github.com/cparse/cparse)
+5. Tools for building and installing software packages (C++ project)
+    - autoconf
+    - make
+    - build-essential
+    - libtool
+    - cmake
+6. Artifactory
 
 #### Precondition
 - Docker with components is installed
 
 ### 1. Install and Run Jenkins With Docker Compose
-#### 1.1 Install Jenkins master, Jenkins Agent and Artifactory by Docker Compose
+#### 1.1 Install Jenkins master, Jenkins Agent, Artifactory and tools fo C++ by Docker Compose
 Run Docker Compose:
 ```
 docker-compose -f jenkins-docker-compose.yml up -d
@@ -57,12 +63,6 @@ ssh-keygen -t rsa -f jenkins_agent
 - Launch method: `Launch agents via SSH`
 - Credentials: select created
 - Host Key Verification Strategy: `Non verifying Verification Strategy`
-- Advanced
-  - Java Path: `/opt/java/openjdk/bin/java`; 
-  - Connection Timeout Seconds: `60`
-  - Max Number of Retries: `10`
-  - Seconds To Wait Between Retries: `15`
-  - `Use TCP_NODELAY flag on the SSH connection`: check
   
 ![Nodes screenshot](readme-assets/jenkins-nodes.png)
 
@@ -99,10 +99,9 @@ Jenkins dashboard
 ![Pipeline screenshot](readme-assets/jenkins-pipeline-01.png)
 
 ### 4. Jenkins Pipeline Run
-Trigger a Jenkins build on Git commit
-- Configuring Jenkins (Manage Jenkins > Configure > System Advanced > Check 'Specify another hook url' > Copy this URL)
-- Configuring GitHub Repository (add Webhook in the repository Settings)
-- Configuring Jenkins Pipeline (Project configuration > Build Triggers > Github hook trigger for GITScm Polling)
+#### Trigger a Jenkins build on Git commit
+Pipeline Settings
+- Build Triggers: `Poll SCM`; Schedule: `* * * * *` 
 
 ![Jenkins_agent_logs screenshot](readme-assets/jenkins-agent-logs.png)
 ![Pipeline screenshot](readme-assets/jenkins-pipeline-02.png)
