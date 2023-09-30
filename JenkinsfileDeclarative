@@ -77,7 +77,7 @@ pipeline {
                                             allowMissing: false,
                                             alwaysLinkToLastBuild: false,
                                             keepAll: false,
-                                            reportDir: 'build/reports/tests/test',
+                                            reportDir: '**/tests/test/',
                                             reportFiles: 'index.html',
                                             reportName: 'Jenkins Pipeline Test Report',
                                             reportTitles: '', useWrapperFileDirectly: true
