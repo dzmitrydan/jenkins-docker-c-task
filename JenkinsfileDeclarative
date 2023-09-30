@@ -69,13 +69,13 @@ pipeline {
                    </head>
                    <body>
                    	<h1>Hello, World!</h1>
-                   	<p>This is a simple HTML file.</p>
+                   	<p>http://localhost:8082/ui/repos/tree/General/cparse/1.34/</p>
                    </body>
                    </html>
                    """
                    writeFile(file: 'ARTIFACTORY.html', text: data)
                    sh "ls -l"
-                }http://localhost:8082/ui/repos/tree/General/cparse/1.34/
+                }
                 archiveArtifacts allowEmptyArchive: true,
                 artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                 followSymlinks: false
