@@ -58,6 +58,17 @@ pipeline {
         }
         stage('Archive Artifacts') {
             steps {
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: false,
+                                reportDir: 'build/reports/tests/test',
+                                reportFiles: 'index.html',
+                                reportName: 'Jenkins Pipeline Test Report',
+                                reportTitles: '', useWrapperFileDirectly: true
+                            ])
+                        }
+            steps {
                 script {
                    def date = new Date()
                    def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
@@ -72,9 +83,7 @@ pipeline {
     }
     post {
         always {
-            steps {
-                recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
-            }
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
     }
 }
