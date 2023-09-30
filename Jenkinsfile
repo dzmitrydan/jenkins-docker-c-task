@@ -26,6 +26,8 @@ pipeline {
         }
         stage('Build') {
             steps {
+                sh 'autoconf --version'
+                sh 'make --version'
                 sh 'make -C cparse'
             }
         }
