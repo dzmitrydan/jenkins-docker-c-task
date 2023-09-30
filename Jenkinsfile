@@ -17,6 +17,13 @@ pipeline {
                 }
             }
         }
+        stage('Pipeline Quality Gates') {
+            steps {
+                script {
+                    sh './gradlew clean check'
+                }
+            }
+        }
         stage('Checkout Project Repo') {
             steps {
                 dir('cparse') {
@@ -26,8 +33,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'autoconf --version'
-                sh 'make --version'
                 sh 'make -C cparse'
             }
         }
