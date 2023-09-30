@@ -36,21 +36,6 @@ pipeline {
                 sh 'make test -C cparse'
             }
         }
-        stage('Push into Artifactory') {
-            steps {
-                script {
-                    server = Artifactory.server 'artifactory'
-                    def uploadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "cparse/core-shunting-yard.o",
-                                "target": "cparse/${VERSION}/"
-                            }
-                        ]}"""
-                    server.upload(uploadSpec)
-                }
-            }
-        }
         stage('Archive Artifacts') {
                 archiveArtifacts allowEmptyArchive: true,
                 artifacts: 'cparse/core-shunting-yard.o',
