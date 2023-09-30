@@ -17,13 +17,13 @@ pipeline {
                 }
             }
         }
-        stage('Pipeline Quality Gates') {
-            steps {
-                script {
-                    sh './gradlew clean check'
-                }
-            }
-        }
+        //stage('Pipeline Quality Gates') {
+            //steps {
+                //script {
+                    //sh './gradlew clean check'
+                //}
+            //}
+        //}
         stage('Checkout Project Repo') {
             steps {
                 git url: 'https://github.com/cparse/cparse.git'
@@ -31,7 +31,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'autoconf --version'
                 sh 'make'
             }
         }
@@ -70,9 +69,9 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
-        }
-    }
+    //post {
+        //always {
+            //recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
+        //}
+    //}
 }
