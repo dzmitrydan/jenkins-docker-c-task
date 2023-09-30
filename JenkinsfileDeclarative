@@ -75,17 +75,6 @@ pipeline {
             steps {
                 recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
             }
-            steps {
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: false,
-                    reportDir: 'build/reports/tests/test',
-                    reportFiles: 'index.html',
-                    reportName: 'Jenkins Pipeline Test Report',
-                    reportTitles: '', useWrapperFileDirectly: true
-                ])
-            }
         }
     }
 }
