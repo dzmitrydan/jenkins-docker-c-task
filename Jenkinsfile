@@ -65,7 +65,7 @@ pipeline {
                    sh "ls -l"
                 }
                 archiveArtifacts allowEmptyArchive: true,
-                artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o',
+                artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                 followSymlinks: false
             }
         }
