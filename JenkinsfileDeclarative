@@ -68,6 +68,11 @@ pipeline {
                 artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                 followSymlinks: false
             }
+        }
+    }
+    post {
+        always {
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
             publishHTML([
                                             allowMissing: false,
                                             alwaysLinkToLastBuild: false,
@@ -77,11 +82,6 @@ pipeline {
                                             reportName: 'Jenkins Pipeline Test Report',
                                             reportTitles: '', useWrapperFileDirectly: true
                                         ])
-        }
-    }
-    post {
-        always {
-            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
     }
 }
