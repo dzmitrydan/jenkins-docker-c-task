@@ -73,15 +73,6 @@ pipeline {
     post {
         always {
             recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
-            publishHTML([
-                                            allowMissing: false,
-                                            alwaysLinkToLastBuild: false,
-                                            keepAll: false,
-                                            reportDir: '**/tests/test/',
-                                            reportFiles: 'index.html',
-                                            reportName: 'Jenkins Pipeline Test Report',
-                                            reportTitles: '', useWrapperFileDirectly: true
-                                        ])
         }
     }
 }
