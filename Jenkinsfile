@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'Jenkins'}
+    agent {label 'Built-In Node'}
     stages {
         stage("Setup Parameters") {
             steps {
