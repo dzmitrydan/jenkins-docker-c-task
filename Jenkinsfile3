@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent {label 'jenkins_agent'}
     stages {
         stage("Setup Parameters") {
             steps {
@@ -52,10 +52,22 @@ pipeline {
             }
         }
         stage('Archive Artifacts') {
+            steps {
+                script {
+                   def date = new Date()
+                   def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
+                   writeFile(file: 'ARTIFACTORY.txt', text: data)
+                   sh "ls -l"
+                }
                 archiveArtifacts allowEmptyArchive: true,
-                artifacts: 'cparse/core-shunting-yard.o',
+                artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o',
                 followSymlinks: false
             }
+        }
+    }
+    post {
+        always {
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
     }
 }
