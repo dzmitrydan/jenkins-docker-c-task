@@ -68,8 +68,8 @@ pipeline {
                 artifacts:
                     'ARTIFACTORY.txt,
                     cparse/core-shunting-yard.o,
-                    **/test-results/test/TEST-*.xml',
-                    uild/reports/tests/test/index.html,
+                    **/test-results/test/TEST-*.xml'
+                    uild/reports/tests/test/index.html'
                 followSymlinks: false
             }
         }
