@@ -1,5 +1,4 @@
-node {
-    agent {label 'jenkins_agent'}
+node('jenkins_agent') {
     stage("Setup Parameters") {
         script {
             properties([
