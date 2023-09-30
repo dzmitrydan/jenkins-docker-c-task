@@ -1,0 +1,42 @@
+version: '3'
+services:
+
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /var/opt/jenkins:/var/opt/jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  agent:
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    container_name: agent
+    expose:
+      - 22
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC67HJzAwaXX4CXDEeL3XoAx85K+crEQFMamSkMB3tcbEHbGON3Dt6S5i/Aou70ikjdIxmZ5pjquoA1Jux2edNpnPMt3X+kg2hJ16j8I6vnK6N/l7f/7R6zB7bbFT+uq/Fp6gUpJliKRLRqmgyP7/GRwvuGSYWop7E4FUttVl2aOdIW7ARzR1Y/oLggP+Jik9w3Qx8b9r2zLbetPOawO137HoEuSIoUCXG2v5NTToxxzPlSn+nz7KqDpEZeTuAr8i8ISH+g4PnmMnGEZPfBfHWozJbTsS6ED9sOy86h+Kx0oRwBLViHzmO+WH2N388zAexoN9gcO0nhw9AuSeikCOvj9dwdg/PWsric/5i8vv6edWdA5Ivoz26ICvSNISjx/RBWsBtSiv+rz2PXN4A9aE/OyKapaOPlxi9dUP35e2FtOLNfhK6jAwIoPuQzdUSvYBdQBAGLuRA4ZdKcnFZ8Vqe8OaoB2sJCLRgi/StR/n69UqKv17ja+/UrAoeCpXKN/bs= Dmitry_Danilov@EPLTVILW0358
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:7.63.12
+    container_name: jfrog-artifactory
+    restart: always
+    user: "${UID}:${GID}"
+    ports:
+      - 8081:8081
+      - 8082:8082
+    volumes:
+      - /var/opt/jfrog/artifactory:/var/opt/jfrog/artifactory
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000

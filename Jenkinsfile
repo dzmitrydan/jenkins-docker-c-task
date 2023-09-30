@@ -1,9 +1,5 @@
 pipeline {
-    //agent {label 'jenkins_agent'}
-    agent any
-    tools {
-        maven 'maven3'
-    }
+    agent {label 'jenkins_agent'}
     stages {
         stage("Setup Parameters") {
             steps {
@@ -30,21 +26,19 @@ pipeline {
         }
         stage('Checkout Project Repo') {
             steps {
-                git url: 'https://github.com/dzmitrydan/aircompany.git'
+                git url: 'https://github.com/cparse/cparse.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'autoconf --version'
+                sh 'make'
             }
         }
         stage('Execute Unit Tests') {
             steps {
-                script {
-                    sh 'mvn -f Java/pom.xml clean test'
-                }
-            }
-        }
-        stage('Prepare Build Artifacts') {
-            steps {
-                script {
-                    sh 'mvn -f Java/pom.xml install'
-                }
+                sh 'autoconf --version'
+                sh 'make test'
             }
         }
         stage('Push into Artifactory') {
@@ -54,8 +48,8 @@ pipeline {
                     def uploadSpec = """{
                         "files": [
                             {
-                                "pattern": "**/target/*SNAPSHOT.jar",
-                                "target": "aircompany/${VERSION}/"
+                                "pattern": "core-shunting-yard.o",
+                                "target": "cparse/${VERSION}/"
                             }
                         ]}"""
                     server.upload(uploadSpec)
@@ -66,19 +60,18 @@ pipeline {
             steps {
                 script {
                    def date = new Date()
-                   def data = "app version ${VERSION}\nhttps://blesstask.jfrog.io/ui/repos/tree/General/aircompany/${VERSION}\n" + date
+                   def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
                    writeFile(file: 'ARTIFACTORY.txt', text: data)
                    sh "ls -l"
                 }
                 archiveArtifacts allowEmptyArchive: true,
-                artifacts: 'ARTIFACTORY.txt, **/target/*SNAPSHOT.jar, **/test-results/test/TEST-*.xml',
+                artifacts: 'ARTIFACTORY.txt, core-shunting-yard.o',
                 followSymlinks: false
             }
         }
     }
     post {
         always {
-            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
             recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
     }

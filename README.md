@@ -1,4 +1,4 @@
-# Jenkins Task
+# Jenkins-Docker Task
 
 ## Description
 ### Composition of the project
@@ -7,27 +7,27 @@
    - Jenkins Master
    - Jenkins Agent
    - Jenkins Pipeline
-3. Project [jenkins-task](https://github.com/dzmitrydan/jenkins-task) (working project)
+3. Project `jenkins-docker-task` (working project)
    - Build tool: [Gradle](https://gradle.org)
    - JenkinsPipelineUnit tests: [Groovy](https://groovy-lang.org) and [JUnit](https://junit.org/junit4)
    - Static code analyzer: [CodeNarc](https://codenarc.org)
    - Jenkinsfile
    - Docker-compose files
-4. Project for pipeline [aircompany](https://github.com/dzmitrydan/aircompany)
-5. Artifactory (cloud, trial)
+4. Project for pipeline [cparse](https://github.com/cparse/cparse)
+5. Artifactory
 
 #### Precondition
 - Docker with components is installed
 
 ### 1. Install and Run Jenkins With Docker Compose
-#### 1.1 Install Jenkins by Docker Compose
+#### 1.1 Install Jenkins master, Jenkins Agent and Artifactory by Docker Compose
 Run Docker Compose:
 ```
-docker-compose -f jenkins-docker-compose.yml up
+docker-compose -f jenkins-docker-compose.yml up -d
 ```
 Stop Docker Compose:
 ```
-docker-compose -f jenkins-docker-compose.yml down
+docker-compose -f docker-compose.yml down
 ```
 Open bash shell of docker container:
 ```
@@ -35,31 +35,22 @@ docker exec -it jenkins bash
 ```
 #### 1.2 Login and install suggested Jenkins plugins
 #### 1.3 Install additional Jenkins plugins
-- Artifactory Plugin
-- Warnings Next Generation Plugin
+- Artifactory plugin
+- Warnings Next Generation plugin
 
-#### 1.4 Install Jenkins with Agent by Docker Compose
-Run Docker Compose:
-```
-docker-compose -f jenkins-agent-docker-compose.yml up
-```
-Stop Docker Compose:
-```
-docker-compose -f jenkins-agent-docker-compose.yml down
-```
-
-#### 1.5 Generate SSH keys (public, private)
+#### 1.4 Generate SSH keys (public, private)
 ```
 ssh-keygen -t rsa -f jenkins_agent
 ```
 
-#### 1.6 In the Jenkins settings (Global credentials) add private SSH keys
+#### 1.5 In the Jenkins settings (Credentials > Global credentials > Add Credentials) add private SSH keys
 - SSH `Username with private key`
 - ID: `jenkins_agent`
 - Username: `jenkins`
+- Select `Enter directly`
 - Enter private SSH key
 
-#### 1.7 Node settings:
+#### 1.6 Node settings:
 - Remote Root Directory: `/home/jenkins/agent`
 - Host: `agent`
 - Launch method: `Launch agents via SSH`
@@ -74,11 +65,21 @@ ssh-keygen -t rsa -f jenkins_agent
   
 ![Nodes screenshot](readme-assets/jenkins-nodes.png)
 
-### 2. Jenkins Pipeline Settings
+### 2. Artifactory
+Jenkins settings for Artifactory
+- System > JFrog
+    - JFrog Platform Instances
+        - Instance ID: `artifactory`
+        - JFrog Platform URL: `http://jfrog-artifactory:8082`
+        - Username: username for Artifactory
+        - Password: password for Artifactory
+
+### 3. Jenkins Pipeline Settings
+- Create pipeline
 - The project is parameterized. The parameter `VERSION` is passed for the directory in the Artifactory.
-- Definition: `Pipeline script`
+- Definition: `Pipeline script from SCM`
 - SCM: `Git`
-- Repository URL: project `jenkins-task` url
+- Repository URL: project `jenkins-docker-task` url
 - Branch Specified: `*/main`
 
 The `VERSION` parameter with the artifact uploaded to the Artifactory is put in the `ARTIFACTORY.txt` in the Archive Artifacts.
@@ -96,19 +97,6 @@ Jenkins dashboard
 
 ![Pipeline screenshot](readme-assets/jenkins-pipeline-01.png)
 
-### 3. Artifactory
-The Artifactory of the cloud version was used on the project (14-Day Trial).
-
-Jenkins settings for Artifactory
-- System > JFrog
-  - JFrog Platform Instances
-    - Instance ID: `artifactory`
-    - JFrog Platform URL: `https://blesstask.jfrog.io`
-    - Username: username for Artifactory
-    - Password: password for Artifactory
-
-![Artifactory screenshot](readme-assets/artifactory.png)
-
 ### 4. Jenkins Pipeline Run
 Trigger a Jenkins build on Git commit
 - Configuring Jenkins (Manage Jenkins > Configure > System Advanced > Check 'Specify another hook url' > Copy this URL)
@@ -117,8 +105,9 @@ Trigger a Jenkins build on Git commit
 
 ![Jenkins_agent_logs screenshot](readme-assets/jenkins-agent-logs.png)
 ![Pipeline screenshot](readme-assets/jenkins-pipeline-02.png)
+![Artifactory screenshot](readme-assets/artifactory.png)
 
-### 5. Quality Gates (for project `jenkins-task`)
+### 5. Quality Gates (for project `jenkins-docker-task`)
 - [CodeNarc](https://codenarc.org)
 - Warnings Next Generation Plugin
 - Tests for Groovy pipeline: [JenkinsPipelineUnit](https://github.com/jenkinsci/JenkinsPipelineUnit)
