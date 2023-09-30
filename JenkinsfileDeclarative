@@ -59,21 +59,23 @@ pipeline {
         stage('Archive Artifacts') {
             steps {
                 script {
-                   def date = new Date()
-                   //def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
-                   def data = """
-                   <!DOCTYPE html>
-                   <html>
-                   <head>
-                   	<title>Hello, World!</title>
-                   </head>
-                   <body>
-                   	<h1>Hello, World!</h1>
-                   	<p>http://localhost:8082/ui/repos/tree/General/cparse/1.34/</p>
-                   </body>
-                   </html>
-                   """
-                   writeFile(file: 'ARTIFACTORY.html', text: data)
+                    def date = new Date()
+                    //def data = "app version ${VERSION}\nhttp://localhost:8082/${VERSION}\n" + date
+                    def data = """
+                        <!DOCTYPE html>
+                        <html>
+                            <head>
+                   	            <title>Hello, World!</title>
+                            </head>
+                            <body>
+                   	            <h1>Artifactory report</h1>
+                   	            <p>app version: ${VERSION}</p>
+                   	            <p><a href="http://localhost:8082/ui/repos/tree/General/cparse/${VERSION}/">link to Artifactory</a></p>
+                   	            <p>date</p>
+                            </body>
+                        </html>
+                    """
+                    writeFile(file: 'ARTIFACTORY.html', text: data)
                    sh "ls -l"
                 }
                 archiveArtifacts allowEmptyArchive: true,
