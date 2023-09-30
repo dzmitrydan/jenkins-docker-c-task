@@ -1,5 +1,6 @@
 pipeline {
-    agent {label 'jenkins_agent'}
+    //agent {label 'jenkins_agent'}
+    agent any
     stages {
         stage("Setup Parameters") {
             steps {
