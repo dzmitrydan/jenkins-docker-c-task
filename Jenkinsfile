@@ -19,18 +19,19 @@ pipeline {
         }
         stage('Checkout Project Repo') {
             steps {
-                git url: 'https://github.com/cparse/cparse.git'
+                dir('cparse') {
+                    git url: 'https://github.com/cparse/cparse.git'
+                }
             }
         }
         stage('Build') {
             steps {
-                sh 'make'
+                sh 'make -C cparse'
             }
         }
         stage('Execute Unit Tests') {
             steps {
-                sh 'autoconf --version'
-                sh 'make test'
+                sh 'make test -C cparse'
             }
         }
         stage('Push into Artifactory') {
@@ -40,7 +41,7 @@ pipeline {
                     def uploadSpec = """{
                         "files": [
                             {
-                                "pattern": "core-shunting-yard.o",
+                                "pattern": "cparse/core-shunting-yard.o",
                                 "target": "cparse/${VERSION}/"
                             }
                         ]}"""
@@ -57,9 +58,14 @@ pipeline {
                    sh "ls -l"
                 }
                 archiveArtifacts allowEmptyArchive: true,
-                artifacts: 'ARTIFACTORY.txt, core-shunting-yard.o',
+                artifacts: 'ARTIFACTORY.txt, cparse/core-shunting-yard.o',
                 followSymlinks: false
             }
+        }
+    }
+    post {
+        always {
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
     }
 }
