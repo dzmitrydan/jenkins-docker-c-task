@@ -11,16 +11,16 @@
    - Build tool: [Gradle](https://gradle.org)
    - JenkinsPipelineUnit tests: [Groovy](https://groovy-lang.org) and [JUnit](https://junit.org/junit4)
    - Static code analyzer: [CodeNarc](https://codenarc.org)
-   - Jenkinsfile
+   - Jenkinsfile (JenkinsfileScripted, JenkinsfileDeclarative)
    - Docker-compose files
-4. C++ project for pipeline [cparse](https://github.com/cparse/cparse)
+4. C++ project for pipeline: [cparse](https://github.com/cparse/cparse)
 5. Tools for building and installing software packages (C++ project)
     - autoconf
     - make
     - build-essential
     - libtool
     - cmake
-6. Artifactory
+6. JFrog Artifactory
 
 #### Precondition
 - Docker with components is installed
@@ -52,7 +52,7 @@ docker exec -it jenkins bash
 ssh-keygen -t rsa -f jenkins_agent
 ```
 
-#### 1.5 In the Jenkins settings (Credentials > Global credentials > Add Credentials) add private SSH keys
+#### 1.5 In the Jenkins settings (Credentials > Global credentials > Add Credentials): add private SSH key
 - Kind: `SSH Username with private key`
 - ID: `jenkins_agent`
 - Username: `jenkins`
@@ -83,14 +83,15 @@ Jenkins settings for Artifactory
 - The project is parameterized. The parameter `VERSION` is passed for the directory in the Artifactory.
 - Definition: `Pipeline script from SCM`
 - SCM: `Git`
-- Repository URL: project `jenkins-docker-task` url
+- Repository URL: `https://github.com/dzmitrydan/jenkins-docker-task.git` 
 - Branch Specified: `*/main`
+- Script Path: `JenkinsfileScripted` or `JenkinsfileDeclarative`
 
-The `VERSION` parameter with the artifact uploaded to the Artifactory is put in the `ARTIFACTORY.xml` in the Archive Artifacts.
+Data about the version of the binary file, the time and the link to the artifact itself in the Artifactory are displayed in the file`ARTIFACTORY.html ` which on the Jenkins dashboard.
 
 ARTIFACTORY.xml:
 
-![Artifactory_report screenshot](readme-assets/artifactory-report.png)
+[<img src="readme-assets/artifactory-report.png" width="250" />](readme-assets/artifactory-report.png)
 
 Jenkins dashboard
 - This chart **Test Result Trend** shows the result of passing Unit tests
@@ -116,9 +117,10 @@ Pipeline Settings
 
 Run pipeline tests:
 ```
-./gradlew test
+./gradlew clean test
 ```
 Run CodeNarc check:
 ```
-./gradlew check
+./gradlew clean check
 ```
+`./gradlew clean check` runs pipeline tests first and then does CodeNarc check.
