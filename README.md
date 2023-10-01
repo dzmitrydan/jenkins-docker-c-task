@@ -39,6 +39,9 @@ Open bash shell of docker container:
 ```
 docker exec -it jenkins bash
 ```
+
+![Docker_containers screenshot](readme-assets/docker-containers.png)
+
 #### 1.2 Login and install suggested Jenkins plugins
 #### 1.3 Install additional Jenkins plugins
 - Artifactory plugin
@@ -83,14 +86,11 @@ Jenkins settings for Artifactory
 - Repository URL: project `jenkins-docker-task` url
 - Branch Specified: `*/main`
 
-The `VERSION` parameter with the artifact uploaded to the Artifactory is put in the `ARTIFACTORY.txt` in the Archive Artifacts.
+The `VERSION` parameter with the artifact uploaded to the Artifactory is put in the `ARTIFACTORY.xml` in the Archive Artifacts.
 
-ARTIFACTORY.txt:
-```
-app version 2.19
-https://blesstask.jfrog.io/ui/repos/tree/General/aircompany/none
-Wed Sep 27 21:24:33 UTC 2023
-```
+ARTIFACTORY.xml:
+
+![Artifactory_report screenshot](readme-assets/artifactory-report.png)
 
 Jenkins dashboard
 - This chart **Test Result Trend** shows the result of passing Unit tests
