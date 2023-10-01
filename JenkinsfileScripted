@@ -24,6 +24,8 @@ node('jenkins_agent') {
             recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
 
+        }
+
 
 
 
