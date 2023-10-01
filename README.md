@@ -29,7 +29,7 @@
 #### 1.1 Install Jenkins master, Jenkins Agent, Artifactory and tools fo C++ by Docker Compose
 Run Docker Compose:
 ```
-docker-compose -f jenkins-docker-compose.yml up -d
+docker-compose -f jenkins-docker-compose.yml up
 ```
 Stop Docker Compose:
 ```

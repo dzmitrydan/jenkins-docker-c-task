@@ -1,5 +1,20 @@
 FROM jenkins/jenkins:lts
-USER 0
+
+ENV JENKINS_USER admin
+ENV JENKINS_PASS password
+
+USER root
+
 RUN apt update \
   && apt-get install -y --no-install-recommends autoconf make build-essential libtool cmake \
   && rm -r /var/lib/apt/lists/*
+
+COPY config/jenkins-plugins.txt /usr/share/jenkins/ref/
+COPY ./config/default-user.groovy /usr/share/jenkins/ref/init.groovy.d/
+RUN jenkins-plugin-cli --plugins --plugin-file  /usr/share/jenkins/ref/jenkins-plugins.txt
+
+COPY ./config/config.xml /var/jenkins_home/jobs/jenkins-docker-task/
+RUN chown jenkins:jenkins /var/jenkins_home/jobs/ -R
+
+USER jenkins
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
