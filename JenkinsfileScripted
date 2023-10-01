@@ -65,9 +65,5 @@ node('jenkins_agent') {
                         artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                         followSymlinks: false
     }
-    post {
-        always {
-            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
-        }
-    }
+
 }
