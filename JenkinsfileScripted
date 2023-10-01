@@ -14,21 +14,14 @@ node('jenkins_agent') {
         }
     }
     stage('Pipeline Quality Gates') {
-
         try {
             script {sh './gradlew clean check'}
         } catch (err) {
             throw err
         } finally {
-
             recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
         }
-
-        }
-
-
-
-
+    }
     stage('Checkout Project Repo') {
         dir('cparse') {
             git url: 'https://github.com/cparse/cparse.git'
@@ -54,26 +47,26 @@ node('jenkins_agent') {
     }
     stage('Archive Artifacts') {
         script {
-                            def date = new Date()
-                            def data = """
-                                <!DOCTYPE html>
-                                <html>
-                                    <head>
-                           	            <title>Artifactory report</title>
-                                    </head>
-                                    <body>
-                           	            <h3>Artifactory report</h3>
-                           	            <p>app version: ${VERSION}</p>
-                           	            <p><a href="http://localhost:8082/ui/repos/tree/General/cparse/${VERSION}/">link to Artifactory</a></p>
-                           	            <p>${date}</p>
-                                    </body>
-                                </html>
-                            """
-                            writeFile(file: 'ARTIFACTORY.html', text: data)
-                           sh "ls -l"
-                        }
-                        archiveArtifacts allowEmptyArchive: true,
-                        artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
-                        followSymlinks: false
+            def date = new Date()
+            def data = """
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>Artifactory report</title>
+                    </head>
+                    <body>
+                        <h3>Artifactory report</h3>
+                        <p>app version: ${VERSION}</p>
+                        <p><a href="http://localhost:8082/ui/repos/tree/General/cparse/${VERSION}/">link to Artifactory</a></p>
+                        <p>${date}</p>
+                    </body>
+                </html>
+            """
+            writeFile(file: 'ARTIFACTORY.html', text: data)
+            sh "ls -l"
+        }
+        archiveArtifacts allowEmptyArchive: true,
+        artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
+        followSymlinks: false
     }
 }
