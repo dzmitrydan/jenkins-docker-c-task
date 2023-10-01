@@ -17,7 +17,6 @@ node('jenkins_agent') {
 
         try {
             script {sh './gradlew clean check'}
-        }
         } catch (err) {
             throw err
         } finally {
