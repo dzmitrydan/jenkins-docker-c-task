@@ -65,5 +65,7 @@ node('jenkins_agent') {
                         artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                         followSymlinks: false
     }
-
+    stage('Create CodeNarc Report') {
+        recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
+    }
 }
