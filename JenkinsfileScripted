@@ -14,10 +14,20 @@ node('jenkins_agent') {
         }
     }
     stage('Pipeline Quality Gates') {
-        script {
-            sh './gradlew clean check'
+
+        try {
+            script {sh './gradlew clean check'}
         }
-    }
+        } catch (err) {
+            throw err
+        } finally {
+
+            recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
+        }
+
+
+
+
     stage('Checkout Project Repo') {
         dir('cparse') {
             git url: 'https://github.com/cparse/cparse.git'
@@ -64,8 +74,5 @@ node('jenkins_agent') {
                         archiveArtifacts allowEmptyArchive: true,
                         artifacts: 'ARTIFACTORY.html, cparse/core-shunting-yard.o, **/test-results/test/TEST-*.xml',
                         followSymlinks: false
-    }
-    stage('Create CodeNarc Report') {
-        recordIssues(tools: [codeNarc(pattern: '**/codenarc/test.xml', reportEncoding: 'UTF-8')])
     }
 }
