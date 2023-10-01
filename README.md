@@ -40,7 +40,7 @@ Open bash shell of docker container:
 docker exec -it jenkins bash
 ```
 
-![Docker_containers screenshot](readme-assets/docker-containers.png)
+![Docker containers screenshot](readme-assets/docker-containers.png)
 
 #### 1.2 Login and install suggested Jenkins plugins
 #### 1.3 Install additional Jenkins plugins
@@ -97,15 +97,19 @@ Jenkins dashboard
 - This chart **Test Result Trend** shows the result of passing Unit tests
 - This chart **CodeNarc Warnings Trend** shows the result CodeNarc check
 
-![Pipeline screenshot](readme-assets/jenkins-pipeline-01.png)
+Scripted Pipeline
+![Pipeline screenshot](readme-assets/jenkins-scripted-pipeline.png)
+
+Declarative Pipeline
+![Pipeline screenshot](readme-assets/jenkins-declarative-pipeline.png)
 
 ### 4. Jenkins Pipeline Run
 #### Trigger a Jenkins build on Git commit
 Pipeline Settings
 - Build Triggers: `Poll SCM`; Schedule: `* * * * *` 
 
-![Jenkins_agent_logs screenshot](readme-assets/jenkins-agent-logs.png)
-![Pipeline screenshot](readme-assets/jenkins-pipeline-02.png)
+![Jenkins agent logs screenshot](readme-assets/jenkins-agent-logs.png)
+![Pipeline build screenshot](readme-assets/jenkins-pipeline-build.png)
 ![Artifactory screenshot](readme-assets/artifactory.png)
 
 ### 5. Quality Gates (for project `jenkins-docker-task`)
@@ -113,7 +117,7 @@ Pipeline Settings
 - Warnings Next Generation Plugin
 - Tests for Groovy pipeline: [JenkinsPipelineUnit](https://github.com/jenkinsci/JenkinsPipelineUnit)
 
-![Jenkins-codenarc screenshot](readme-assets/jenkins-codenarc.png)
+![Jenkins codenarc screenshot](readme-assets/jenkins-codenarc.png)
 
 Run pipeline tests:
 ```
