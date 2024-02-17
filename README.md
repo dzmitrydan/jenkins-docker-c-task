@@ -1,5 +1,8 @@
 # Jenkins-Docker Task
 
+## Task Description
+- **[DevOps (CI/CD) Task](readme-assets/devops-task.md)**
+
 ## Description
 ### Composition of the project
 1. Docker with Docker Compose
